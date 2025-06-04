@@ -1,7 +1,9 @@
-const readline = require("readline/promises");
-const { GoogleGenAI } = require("@google/genai");
-const { text } = require("stream/consumers");
-require("dotenv").config();
+import readline from "readline/promises";
+import { GoogleGenAI } from "@google/genai";
+import { text } from "stream/consumers";
+import { config } from "dotenv";
+
+config();
 
 const chatHistory = [];
 const r1 = readline.createInterface({
