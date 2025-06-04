@@ -2,16 +2,24 @@ import readline from "readline/promises";
 import { GoogleGenAI } from "@google/genai";
 import { text } from "stream/consumers";
 import { config } from "dotenv";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
 config();
 
 const chatHistory = [];
+
 const r1 = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const mcpClient = new Client({
+  name: "streamable-http-client",
+  version: "1.0.0",
+});
 
 async function chatLoop() {
   const question = await r1.question("You: ");
