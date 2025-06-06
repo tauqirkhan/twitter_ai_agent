@@ -4,6 +4,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import { createPost } from "./mcp.tool.js";
 
 const app = express();
 app.use(express.json());
@@ -58,6 +59,17 @@ app.post("/mcp", async (req, res) => {
             },
           ],
         };
+      }
+    );
+
+    server.tool(
+      "createPost",
+      "Create a post on X formally knows as Twitter",
+      {
+        status: z.string(),
+      },
+      async ({ status }) => {
+        return await createPost(status);
       }
     );
 
