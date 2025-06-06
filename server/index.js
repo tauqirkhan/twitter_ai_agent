@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod";
 
 const app = express();
 app.use(express.json());
@@ -41,6 +42,24 @@ app.post("/mcp", async (req, res) => {
     });
 
     // ... set up server resources, tools, and prompts ...
+    server.tool(
+      "addTwoNumbers",
+      "add two numbers",
+      {
+        a: z.number(),
+        b: z.number(),
+      },
+      async ({ a, b }) => {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `The sum of ${a} and ${b} is ${a + b}`,
+            },
+          ],
+        };
+      }
+    );
 
     // Connect to the MCP server
     await server.connect(transport);
